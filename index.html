@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Northbridge Attendance — Sign in</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="login-brand">
+    <div class="brand-mark">
+      <svg class="brand-logo" width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="9" fill="url(#logoGradHero)"/>
+        <circle cx="16" cy="16" r="9" stroke="#1E2A38" stroke-width="2"/>
+        <path d="M16 10.5v6l4 2.3" stroke="#1E2A38" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs><linearGradient id="logoGradHero" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#F9C846"/><stop offset="1" stop-color="#F2994A"/></linearGradient></defs>
+      </svg>
+      Northbridge Attendance
+    </div>
+
+    <div class="login-hero">
+      <div class="login-clock mono" id="liveClock">00:00:00</div>
+      <div class="login-date" id="liveDate">Loading date…</div>
+      <h1>Attendance that runs itself, from the door to the dashboard.</h1>
+      <p>Biometric punches sync straight from the gate to your team's records — no spreadsheets, no manual entry, no end-of-month scramble.</p>
+
+      <div class="login-stats">
+        <div><b class="mono">152</b><span>Employees tracked</span></div>
+        <div><b class="mono">4</b><span>Biometric terminals</span></div>
+        <div><b class="mono">99.2%</b><span>Sync uptime</span></div>
+      </div>
+    </div>
+
+    <div class="login-foot">© 2026 Northbridge Industries — Attendance Suite</div>
+  </div>
+
+  <div class="login-panel">
+    <div class="login-card" id="loginPanel" data-role="employee">
+      <div class="login-card-top">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="9" fill="url(#logoGradCard)"/>
+            <circle cx="16" cy="16" r="9" stroke="#1E2A38" stroke-width="2"/>
+            <path d="M16 10.5v6l4 2.3" stroke="#1E2A38" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs><linearGradient id="logoGradCard" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#F9C846"/><stop offset="1" stop-color="#F2994A"/></linearGradient></defs>
+          </svg>
+          <h2>Welcome back</h2>
+        </div>
+        <button class="btn-icon" data-theme-toggle aria-label="Toggle dark mode" title="Toggle dark mode">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+      <p class="sub">Sign in to view your attendance dashboard.</p>
+
+      <div class="role-tabs">
+        <button type="button" class="role-tab active" data-role="employee">Employee</button>
+        <button type="button" class="role-tab" data-role="admin">Admin</button>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label id="idLabel" for="loginId">Employee ID or email</label>
+          <input type="text" id="loginId" placeholder="EMP001 or your email" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+        <div class="field-error" id="loginError"></div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </form>
+
+      <div class="cred-hint" id="credHint">Demo: EMP001 / employee123</div>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/mockData.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // If already logged in, skip straight to the right dashboard.
+  (function () {
+    const u = Session.get();
+    if (u) window.location.href = u.role === "admin" ? "admin.html" : "employee.html";
+  })();
+
+  function tickClock() {
+    const now = new Date();
+    document.getElementById("liveClock").textContent = now.toLocaleTimeString("en-US", { hour12: false });
+    document.getElementById("liveDate").textContent = now.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
+</script>
+</body>
+</html>
